@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <script>
+            function main() {
+                for(i=1;i<5;i++){
+                    if(i<4){
+                        var $div=document.getElementById("line1");
+                        $div.innerHTML+="<input type=\"submit\" name=\"submit\" onclick=\"x('"+i+"')\" value='"+i+"'>&nbsp;";
+                    }else{
+                        var $div=document.getElementById("operator1");
+                        $div.innerHTML="<input type='button' value='C'>";
+                    }
+                }
+                for(i=4;i<8;i++){
+                    if(i<7){
+                        var $div=document.getElementById("line2");
+                        $div.innerHTML+="<input type=\"submit\" name=\"submit\" onclick=\"x('"+i+"')\" value='"+i+"'>&nbsp;";
+                    }else{
+                        var $div=document.getElementById("operator2");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x('*')\" value=\"*\">";
+                    }
+                }
+                for(i=7;i<11;i++){
+                    if(i<10){
+                        var $div=document.getElementById("line3");
+                        $div.innerHTML+="<input type=\"submit\" name=\"submit\" onclick=\"x('"+i+"')\" value='"+i+"'>&nbsp;";
+                    }else{
+                        var $div=document.getElementById("operator3");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x('/')\" value=\"/\">";
+                    }
+                }
+                for(i=12;i<16;i++){
+                    if(i==12){
+                        var $div=document.getElementById("line41");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x(0)\" value=\"0\">&nbsp;";
+                    }
+                    if(i==13){
+                        var $div=document.getElementById("line42");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x('+')\" value=\"+\">&nbsp;";
+                    }
+                    if(i==14){
+                        var $div=document.getElementById("line43");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x('-')\" value=\"-\">&nbsp;";
+                    }
+                    if(i==15){
+                        var $div=document.getElementById("line44");
+                        $div.innerHTML="<input type=\"submit\" name=\"submit\" onclick=\"x('=')\" value=\"=\">&nbsp;";
+                    }
+
+                }
+            }
+
+            function x(name) {
+                document.getElementById("box").value+=name;
+            }
+
+            function clear() {
+                str=document.getElementById("box");
+                str.value="";
+            }
+
+            // function value() {
+            //     #add(i,j){
+            //         var v=i+j;
+            //     }
+            // }
+
+
+    </script>
+
+
+</head>
+<body onload="main()">
+
+<input id="box" type="text" style="height: 5mm;width: 39mm" name="box"></input>
+<div id="line1" ></div>
+<div id="line2" ></div>
+<div id="line3" ></div>
+<div id="operator1" onclick="clear()" style="position: absolute;top: 9.4mm;left: 34.4mm" ></div>
+<div id="operator2" style="position: absolute;top: 15.5mm;left: 34.4mm" ></div>
+<div id="operator3" style="position: absolute;top: 21.7mm;left: 34.4mm" ></div>
+<!--<input id="add" type="button" style="height: 5mm;width: 40mm"></input>-->
+<div id="line41" name="+"></div>
+<div id="line42" style="position: absolute;top: 27.8mm;left: 12.8mm;"></div>
+<div id="line43" style="position: absolute;top: 27.8mm;left: 23.6mm"></div>
+<div id="line44" style="position: absolute;top: 27.8mm;left: 34.4mm"></div>
+
+
+</body>
+</html>

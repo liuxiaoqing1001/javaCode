@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script>
+
+        var req=new XMLHttpRequest();
+        function xxx() {
+            var str=document.getElementById("name").value;
+            req.open("post","/ttt",true);
+            req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            req.onreadystatechange=function () {
+                if(req.readyState==4&&req.status==200){
+                    document.getElementById("mydiv").innerHTML=req.responseText;
+                }
+            }
+            req.send("name="+str);
+        }
+        function main() {
+            setInterval(function () {
+                xxx();
+            },1000);
+            // setTimeout(function () {
+            //     xxx();
+            // },1000);
+        }
+
+    </script>
+
+</head>
+<body onload="main()">
+
+<!--<iframe style="display: none" src="http://www.baidu.com"></iframe>&lt;!&ndash;淘汰&ndash;&gt;-->
+<!--<img src="http://www.tute.edu.cn/images/logo_01.png">-->
+<!--<a href="/ppp?name=xxx">aaa</a>-->
+
+
+<form method="post" action="/ttt">
+    <input id="name" type="text" name="name"><br>
+    <input type="button" value="ok" onclick="xxx()">
+    <div id="mydiv"></div>
+</form>
+
+
+</body>
+</html>

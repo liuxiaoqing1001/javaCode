@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context.xsd">
+<!-- 扫描业务层 -->
+<context:component-scan base-package="com.mengfei.biz"/>
+
+<!--配置c3p0连接池 -->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <!--基本配置-->
+    <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+    <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo"/>
+    <property name="user" value="alex"/>
+    <property name="password" value="123"/>
+    <!--高级配置-->
+    <property name="maxPoolSize" value="30"/> <!--连接池的最大连接数，默认: 15，建议：对于有较大DB规模，最大连接不要设置过大，避免本地维护的db太大-->
+    <property name="minPoolSize" value="3"/><!--c3p0连接池中保留的最小连接数，默认：3，建议：可考虑该值的设置和初始化连接保持一致-->
+    <property name="initialPoolSize" value="3"/><!--初始化时获取3个连接，取值应在minPoolSize与maxPoolSize之间。默认: 3，建议：3，对于db规模特别大的情况下可考虑设置为1个，避免启动时间过长-->
+    <property name="maxIdleTime" value="1800"/><!--连接的最大空闲时间,3分钟内未使用则会断开连接，若为0则永远不会断开。默认: 0 毫秒，建议：该值不要太小，避免频繁的建立连接关闭连接。也不要太大，导致一直无法关闭-->
+    <property name="maxStatements" value="900"/> <!--连接池为数据源缓存的PreparedStatement的总数,就是可以执行SQL语句的对象的个数,默认：0，建议：这个数量应该根据应用中平均连接数乘以每个连接的平均PreparedStatement来计算-->
+    <property name="maxStatementsPerConnection" value="30"/><!--连接池为数据源单个连接缓存的PreparedStatement数，默认：0，建议：由于PreparedStatement属于单个Connection，这个配置比maxStatements更有意义-->
+    <property name="idleConnectionTestPeriod" value="90"/><!--在进行心跳检测的时候，会对所有的空闲连接进行心跳检测。如果发现总连接小于最小连接数，则会创建连接，保持最小的连接数,该值需要结合数据库的wait_timeout,interactive_timeout值进行设置
+		假如数据库为120s，则心跳检测时间在120s以内越大越好。如果太小，心跳检测时间会比较频繁。建议:设置为90s-->
+    <property name="checkoutTimeout" value="5000"/><!--如果没有连接可用或者连接全部占用时，需要等待的时间（单位：ms），默认为：一直等待-->
+</bean>
+
+<!-- 配置SqlSessionFactory -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <!-- 引用数据源 -->
+    <property name="dataSource" ref="dataSource"/>
+    <!-- 扫描类的映射文件 -->
+    <property name="mapperLocations" value="classpath:com/mengfei/mapper/*.xml"/>
+</bean>
+
+<!-- 配置映射接口，spring会自动查找下面的接口 -->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="com.mengfei.mapper"/>
+</bean>
+
+<!-- 配置事务管理器 -->
+<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- 配置事务通知 -->
+<tx:advice transaction-manager="txManager" id="txAdvice">
+    <tx:attributes>
+        <tx:method name="register*"/>
+        <tx:method name="save*"/>
+        <tx:method name="update*"/>
+        <tx:method name="delete*"/>
+        <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+        <tx:method name="login*" propagation="SUPPORTS" read-only="true"/>
+    </tx:attributes>
+</tx:advice>
+
+<!-- 配置aop增强处理 -->
+<aop:config>
+    <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.mengfei.biz.*.*(..))"/>
+</aop:config>
+</beans>

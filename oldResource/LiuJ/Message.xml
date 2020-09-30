@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Person>
+  <Student id="12">
+    <name>刘</name>
+    <age>20</age>
+    <school>毕节四高</school>
+  </Student>
+</Person>

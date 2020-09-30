@@ -1,0 +1,139 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Test</title>
+        <script>
+        // // 闭包
+        //     // 函数function
+        //     function increase() {
+        //         // 变量var
+        //         var i=0;
+        //         return function () {
+        //             i++;
+        //             return i;
+        //         }
+        //     }
+        //     var i1=increase();
+        //     // 打印：
+        //     console.log(i1());
+        //     console.log(i1());
+        //     console.log(i1());
+
+
+        //     function Person() {
+        //         this.setName=function (name) {
+        //             this.name=name;
+        //         }
+        //         this.dis=function () {
+        //             console.log(this.name);
+        //         }
+        //     }
+        //
+        //     function Student() {
+        //         this.setAge=function (age) {
+        //             this.age=age;
+        //         }
+        //         this.dis=function () {
+        //             console.log(this.name+"\t"+this.age);
+        //         }
+        //     }
+        // //继承
+        //     //在Student中扩一个Person的内存
+        //     Student.prototype=new Person();
+        //     var p=new Student();
+        //     p.setName("liu");
+        //     p.setAge(20);
+        //     p.dis();
+
+
+        // //window
+        //     function Person() {}
+        //     var setName=function (name) {
+        //         this.name=name;
+        //     }
+        //     var dis=function () {
+        //         console.log(this);
+        //         console.log(this.name);
+        //     }
+        //     var p1=new Person();
+        //     var p2=new Person();
+        //     setName.apply(null,["xxx"]);
+        //     dis.call(null);
+
+
+        // // 动态添加
+        //     function main() {
+        //         var $div=document.getElementById("xxx");
+        //         for(i=0;i<4;i++){
+        //             $div.innerHTML+="<input type='button' value='"+i+"'><br>";
+        //         }
+        //     }
+
+
+        // //数组
+        //     var p={"id":1,"name"8:"xxx",subject:[{"name":"math","score":100},{"name":"english","score":90}]};
+        //     console.log(p["subject"][0]["name"]);
+        //     // console.log(p.subject[0].name);
+
+
+            // function xxx() {
+            //     var nameInput=document.getElementById("name");
+            //     if(nameInput.value==""){
+            //         return;
+            //     }
+            //     document.getElementById("myform").submit();
+            // }
+
+
+            // function c(i) {
+            //     document.getElementById("r1").value+=i;
+            // }
+
+        </script>
+
+
+        <!--<style>-->
+            <!--#xxx{-->
+                <!--color: #d494ff;-->
+            <!--}-->
+
+        <!--</style>-->
+
+        <!--<link rel="stylesheet" type="text/css" href="Test/my.css">-->
+
+
+    </head>
+    <body>
+
+
+    <!--<input id="r1" type="text" name="r1">-->
+    <!--<input type="submit" name="submit" onclick="c(1)" value="1">-->
+
+
+
+    <!--<body onload="main()">-->
+    <!--<div id="xxx"></div>-->
+    <!--<input onclick="main()">-->
+
+
+    <!--<form id="myform" method="post" action="/ttt">-->
+        <!--<input id="name" type="text" name="name"><br>-->
+        <!--<input type="password" name="pass"><br>-->
+        <!--<input type="button"  value="ok" onclick="xxx()">-->
+        <!--<input type="submit">-->
+
+    </form>
+
+
+    <!--&lt;!&ndash;color: #ff6930 覆盖 color: #d494ff;&ndash;&gt;-->
+    <!--<div id="xxx" style="color: #ff6930" class="z1">aaa</div>-->
+    <!--<div id="yyy">bbb</div>-->
+
+    </body>
+    <!--<style>-->
+        <!--.z1{-->
+            <!--color: #b2ffc9;-->
+        <!--}-->
+    <!--</style>-->
+    </html>

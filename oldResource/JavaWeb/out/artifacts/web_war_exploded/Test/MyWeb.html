@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Space</title>
+    <script>
+        function moveRight() {
+            var x=document.getElementById("mydiv").style.top;
+            x=parseInt(x)+10;
+            document.getElementById("mydiv").style.left=x+"px";
+        }
+        function moveLeft() {
+            var y=document.getElementById("mydiv").style.left;
+            y=parseInt(y)+10;
+            document.getElementById("mydiv").style.left=y+"px";
+        }
+    </script>
+</head>
+<body>
+<div style="position: absolute;top: 100px;left: 0px;" id="mydiv">
+    <img src="" width="100px" height="100px">
+</div>
+<input type="button" value="U" onclick="moveUp()">
+<input type="button" value="D" onclick="moveDown()">
+<input type="button" value="L" onclick="moveLeft()">
+<input type="button" value="R" onclick="moveRight()">
+
+
+<!--<br>&lt;!&ndash;换行&ndash;&gt;-->
+<!--<hr>&lt;!&ndash;横线&ndash;&gt;-->
+<!--<p>-->
+    <!---->
+<!--</p>&lt;!&ndash;开启另一段&ndash;&gt;-->
+
+</body>
+</html>

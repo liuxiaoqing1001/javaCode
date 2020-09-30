@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper>
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024" />
+    <select id="temp">
+        select * from tb_news
+        <trim prefix="where" prefixOverrides="and">
+            <if test="null != id">
+                and id=#{id}
+            </if>
+            <if test="null != typeid">
+                and typeid=#{id}
+            </if>
+            <if test="null != title">
+                <bind name="titleKey" value="'%'+title+'%'" />
+                    and title like #{titleKey}
+            </if>
+            <if test="null != comefrom">
+                and comefrom=#{comefrom}
+            </if>
+            <if test="null != pubdatetime">
+                and DATE_FORMAT(pubdatetime,'%Y%m%d')=DATE_FORMAT(#{pubdatetime},'%Y%m%d')
+            </if>
+        </trim>
+    </select>
+
+    <update id="">
+        update tb_user
+        <set>
+            <choose>
+                <when test="null != password">
+                    password=#{password}
+                </when>
+                <when test="null != status">
+                    status = #{status}
+                </when>
+                <when test="null != photourl">
+                    photourl = #{photourl}
+                </when>
+                <when test="null != mobile">
+                    mobile = #{mobile}
+                </when>
+            </choose>
+        </set>
+        where id=#{id}
+    </update>
+
+    <insert id="">
+        insert into tb_news values
+        <foreach collection="list" item="n" separator=",">
+            (null,#{n.typeid},#{n.title},#{n.content},now(),#{comefrom})
+        </foreach>
+    </insert>
+
+    <delete id="">
+        delete from tb_news where id in
+        <foreach collection="list" item="delid" separator="," open="("  close=")">
+            #{delid}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -5,6 +5,7 @@
 
 <!--动态sql-->
 <mapper>
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024" />
     <select id="temp">
         <bind name="namekey" value="'%'+name+'%'"/>
         select * from tb_user where name like #{namekey}

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="maven">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/.m2" />
+    </SOURCES>
+  </library>
+</component>

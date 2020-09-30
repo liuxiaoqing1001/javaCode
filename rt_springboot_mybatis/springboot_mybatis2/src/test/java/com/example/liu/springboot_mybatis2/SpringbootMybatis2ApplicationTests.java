@@ -2,7 +2,9 @@ package com.example.liu.springboot_mybatis2;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.liu.springboot_mybatis2.dao.*;
+import com.example.liu.springboot_mybatis2.dao.impl.NewsDaoPlusImpl;
 import com.example.liu.springboot_mybatis2.entity.*;
 import com.example.liu.springboot_mybatis2.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootTest
@@ -274,5 +277,67 @@ class SpringbootMybatis2ApplicationTests {
         wrapper1.like("title","小").or().eq("comefrom" , "头条");
         System.out.println(newsDaoPlus.selectList(wrapper1));
     }
+
+
+    @Autowired
+    NewsDaoPlus newsDaoPlus1;
+
+    @Test
+    void testPlus2(){
+        // 分页测试
+        Page<NewsPlus> page = new Page<>(1,3) ;
+        QueryWrapper<NewsPlus> wrapper = new QueryWrapper<>() ;
+        wrapper.in("typeid" , new Integer[]{1,2,3}) ;
+        newsDaoPlus1.selectPage(page , wrapper) ;
+        System.out.println("本页数据 : " + page.getRecords());
+        System.out.println("总页数 : " + page.getPages() + " , 总记录数 : " + page.getTotal());
+        System.out.println("当前页 : " + page.getCurrent() + " ,每页记录数 : " + page.getSize());
+
+    }
+
+
+//    MyBatis Plus使用时dao层进一步封装
+//      1）建议实体类中提供常量——数据表字段名映射常量
+//​	    2）dao层创建派生类，描述所需要的数据库操作方法，在方法中封装Wrapper
+//​	    3）以新闻表操作为例
+
+    @Autowired
+    NewsDaoPlusImpl nDao2 ;
+    @Test
+    void testPlus3() throws ParseException {
+        NewsPlus n1 = new NewsPlus() ;
+        n1.setId(10);
+        n1.setTitle("下雨降温了");
+        n1.setComefrom("大软A402");
+        System.out.println(nDao2.update(n1));
+        System.out.println("---------");
+        System.out.println(nDao2.getById(10));
+        System.out.println("----------");
+        NewsPlus n2 = new NewsPlus() ;
+        n2.setTypeid(2);
+        n2.setPubdatetime(new SimpleDateFormat("yyyyMMdd").parse("20200710"));
+        Page<NewsPlus> page = nDao2.getPage(1 , 3 , n2) ;
+        System.out.println(page.getRecords());
+    }
+
+
+//    MyBatis的缓存 [select]
+//      1）一级缓存默认开启 【SqlSession级别--会话级别】
+//        同一个SqlSession对象调用同一个Mapper或者Dao层的查询方法，而且传入参数相同，默认使用缓存。
+//        如果调用了SqlSession的close或者clear方法，缓存将会被清空。
+//      2）二级缓存，默认未开启【Application级别】
+//         ①。MyBatis的配置文件中描述开启缓存
+//         ②。mapper的xm文件中开启缓存
+
+    @Autowired
+    NewsDao newsDao1;
+
+    @Test
+    void testMyBatis(){
+        System.out.println(newsDao1.getById(10));
+        System.out.println(newsDao1.getById(10));
+    }
+
+
 
 }
