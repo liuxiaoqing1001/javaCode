@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--动态sql-->
+<mapper>
+    <select id="temp">
+        <bind name="namekey" value="'%'+name+'%'"/>
+        select * from tb_user where name like #{namekey}
+    </select>
+
+    <update id="">
+        update tb_user
+        <set>
+            <if test="null!=password">
+                password=#{password},
+            </if>
+            <if test="null!=photourl">
+                photourl=#{photourl},
+            </if>
+            <if test="null!=status">
+                status=#{status},
+            </if>
+            <if test="null!=mobile">
+                mobile=#{mobile},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <select id="">
+        select * from tb_news
+        <where>
+            <if test="null!=id">
+                and id=#{id}
+            </if>
+            <if test="null!=typeid">
+                and typeid=#{typeid}
+            </if>
+            <if test="null!=title">
+                <bind name="titleKey" value="'%'+title+'%'"/>
+                and title like #{titleKey}
+            </if>
+            <if test="null!=comefrom">
+                and comefrom=#{comefrom}
+            </if>
+            <if test="null!=pubdatetime">
+                and DATE_FORMAT(pubdatetime,'%y%m%d')=DATE_FORMAT(#{pubdatetime},'%y%m%d')
+            </if>
+        </where>
+    </select>
+
+    <select id="">
+        select * from tb_news
+        <trim prefix="where" prefixOverrides="and">
+            <if test="null != id">
+                and id=#{id}
+            </if>
+            <if test="null != typeid">
+                and typeid=#{typeid}
+            </if>
+            <if test="null != title">
+                <bind name="titleKey" value="'%'+title+'%'" />
+                and title like #{titleKey}
+            </if>
+            <if test="null != comefrom">
+                and comefrom=#{comefrom}
+            </if>
+            <if test="null != pubdatetime">
+                and DATE_FORMAT(pubdatetime,'%Y%m%d')=DATE_FORMAT(#{pubdatetime},'%Y%m%d')
+            </if>
+        </trim>
+    </select>
+
+    <insert id="">
+        insert into tb_news values
+        <foreach collection="list" item="n" separator=",">
+            (null,#{n.typeid},#{n.title},#{n.content},now(),#{n.comefrom})
+        </foreach>
+    </insert>
+
+    <delete id="">
+        delete from tb_news where id in
+        <foreach collection="list" item="delid" separator="," open="("close= ")">
+            #{delid}
+        </foreach>
+    </delete>
+
+    <update id="">
+        update tb_user
+        <set>
+            <choose>
+                <when test="null!=password">
+                    password=#{password}
+                </when>
+                <when test="null!=status">
+                    status=#{status}
+                </when>
+                <when test="null != photourl">
+                    photourl = #{photourl}
+                </when>
+                <when test="null != mobile">
+                    mobile = #{mobile}
+                </when>
+            </choose>
+        </set>
+    </update>
+
+
+
+</mapper>
