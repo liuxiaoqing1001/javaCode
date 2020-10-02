@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <script>
+        var userObj = new Object() ;
+        var str = sessionStorage.getItem("loginuser") ;
+        if(str != null || str != "" || str != undefined) {
+            userObj = JSON.parse(str) ;
+        }
+
+        $(function(){
+            if(null != userObj) {
+                $("#showname").text(userObj.name);
+            } else {
+                $("#showname").text('未登录');
+            }
+
+            /*
+            request : PUT  	http://localhost:8090/user，上传信息是 js对象
+				 {id:1,password:"123"} 或者 {id:1,mobile:"12345676453"}
+             */
+            $("#btnUpMobile").click(function(){
+                var upData = {
+                    id : userObj.id ,
+                    mobile : $('input[name="mobile"]').val()
+                }
+                $.ajax({
+                    url : 'http://localhost:8090/user' ,
+                    type : 'PUT',
+                    data : upData,
+                    dataType : 'json' ,
+                    success : function(reqData){
+                        //console.log(reqData) ;
+                        alert(reqData.msg) ;
+                    }
+
+                })
+            })
+        })
+    </script>
+</head>
+<body>
+    <div><span id="showname"></span></div>
+    <h3>修改电话</h3>
+    <p>新电话号码 <input type="text" name="mobile" /> <button type="button" id="btnUpMobile">修改</button> </p>
+</body>
+</html>

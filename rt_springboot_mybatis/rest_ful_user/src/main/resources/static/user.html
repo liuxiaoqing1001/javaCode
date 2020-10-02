@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <script>
+        $(function(){
+
+            $("#loginBtn").click(function(){
+                //console.log('http://localhost:8090/user/' + $('#formLogin input[name="loginname"]').val() + '/' +  $('#formLogin input[name="loginpass"]').val() );
+                $.get(
+                    'http://localhost:8090/user/' + $('#formLogin input[name="loginname"]').val() + '/' +  $('#formLogin input[name="loginpass"]').val() ,
+                    function(reqData) {
+                        //console.log(reqData) ;
+                        alert(reqData.msg) ;
+                        if(reqData.errCode == 0) {
+                            sessionStorage.setItem("loginuser" , JSON.stringify(reqData.data)) ;
+                            location.href = "index.html" ;
+                        } else {
+                            $('#formLogin input[name="loginname"]').focus();
+                        }
+                    }
+                );
+            }) ;
+
+            /*
+            request : POST   http://localhost:8090/user , 上传信息是json格式数据
+				{"name":"张三","password":"123"}
+             */
+            $("#regBtn").click(function(){
+                var userObj = {
+                    name : $('#formRegister input[name="regname"]').val(),
+                    password : $('#formRegister input[name="regpass"]').val()
+                } ;
+                var upData = JSON.stringify(userObj) ;
+                //console.log(upData) ;
+                $.ajax({
+                    url : 'http://localhost:8090/user' ,
+                    type : 'POST',
+                    data : upData,
+                    contentType : 'application/json;charset=UTF-8',
+                    dataType : 'json' ,
+                    success : function(reqData){
+                       //console.log(reqData)
+                        alert(reqData.msg) ;
+                    }
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <h3>登录</h3>
+    <form id="formLogin">
+        <p><input type="text" name="loginname" placeholder="登录账号" /> </p>
+        <p><input type="text" name="loginpass" placeholder="登录密码" /> </p>
+        <p><button type="button" id="loginBtn">登录</button> </p>
+    </form>
+
+    <h3>注册</h3>
+    <form id="formRegister">
+        <p><input type="text" name="regname" placeholder="注册账号" /> </p>
+        <p><input type="text" name="regpass" placeholder="注册密码" /> </p>
+        <p><button type="button" id="regBtn">登录</button> </p>
+    </form>
+
+</body>
+</html>
