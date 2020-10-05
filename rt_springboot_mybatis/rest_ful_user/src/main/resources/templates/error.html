@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>全局异常页面</title>
+</head>
+<!--* 异常发生情况下==》返回相关异常信息 ==》全局异常处理-->
+<!--* ​	    【同Spring框架下SpringMVC处理方案一致】-->
+<!--* ​	    @ControllerAdvice + @ExceptionHandler-->
+<!--        引入模板页-->
+<!--<dependency>-->
+<!--    <groupId>org.springframework.boot</groupId>-->
+<!--    <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--</dependency>-->
+<!--全局异常错误页==》在步骤②中没有捕获到的异常都加载该异常页面 ==》template模板-->
+
+<body>
+    <h3>对不起，发生了异常</h3>
+    异常 ：<p th:text="${exception}"></p>
+    消息来源：<p th:text="${comeForm}"></p>
+</body>
+</html>

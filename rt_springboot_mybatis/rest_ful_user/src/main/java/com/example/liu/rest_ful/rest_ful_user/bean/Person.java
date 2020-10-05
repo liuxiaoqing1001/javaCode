@@ -1,4 +1,4 @@
-package com.example.liu.rest_ful.rest_ful_user.entity;
+package com.example.liu.rest_ful.rest_ful_user.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
