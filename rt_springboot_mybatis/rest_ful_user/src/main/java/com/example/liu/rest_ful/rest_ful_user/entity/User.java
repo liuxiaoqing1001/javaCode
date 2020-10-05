@@ -16,8 +16,10 @@ import java.util.Date;
 public class User implements Serializable {
     private Integer id ;
     private String name ;
+//    JsonIgnore    返回的password信息不被序列化  获取密码为空
     @JsonIgnore
     private String password ;
+//    凡是日期类型加DateTimeFormat和JsonFormat
     @DateTimeFormat(pattern = "yyyy年MM月dd日")
     @JsonFormat(pattern = "yyyy年MM月dd日 HH:mm:ss" , timezone = "Asia/Shanghai")
     private Date regdatetime ;

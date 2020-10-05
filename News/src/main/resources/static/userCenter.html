@@ -2,22 +2,25 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>个人中心</title>
     <script src="assets/js/jquery-3.1.1.min.js"></script>
     <script>
         var userObj = new Object() ;
         var str = sessionStorage.getItem("loginuser") ;
-
         // 未登录用户不允许访问该页
         if(str == null || str == undefined || str == "") {
             location.href="user.html" ;
         }
-
         if(str != null || str != "" || str != undefined) {
             userObj = JSON.parse(str) ;
         }
 
         $(function(){
+            $('#formUpPhoto input[name="id"]').val(userObj.id);
+            if(userObj.photourl != null && userObj.photourl != '') {
+                $("#showphoto").attr("src" ,userObj.photourl) ;
+            }
+
             if(null != userObj) {
                 $("#showname").text(userObj.name);
             } else {
@@ -39,29 +42,20 @@
                     data : upData,
                     dataType : 'json' ,
                     success : function(reqData){
-                        console.log(reqData) ;
+                        //console.log(reqData) ;
                         alert(reqData.msg) ;
                         sessionStorage.setItem("loginuser" , JSON.stringify(reqData.data)) ;
-
                     }
 
                 })
             })
 
-            $('#formUpPhoto input[name="id"]').val(userObj.id);
-            if(userObj.photourl != null && userObj.photourl != '') {
-                $("#showphoto").attr("src" ,userObj.photourl) ;
-            }
-
             /*
             *  文件上传
             * */
-            //POST  http://localhost:8090/user/photo
-            //      body    form-data   id:2 userphoto(file): select file
             $("#btnUpPhoto").click(function(){
                 alert("aaa") ;
-                // 获取表单所有数据
-                var formData = new FormData($("#formUpPhoto")[0]);
+                var formData = new FormData($("#formUpPhoto")[0]);   // 获取表单所有数据
                 $.ajax({
                     url : 'http://localhost:8090/user/photo' ,
                     type : 'POST' ,
@@ -88,12 +82,7 @@
         <img id="showphoto" src="assets/imgs/user-photo.jpg" height="80" width="80"/>
     </div>
     <h3>修改电话</h3>
-    <p>
-        新电话号码
-        <input type="text" name="mobile" />
-        <button type="button" id="btnUpMobile">修改</button>
-    </p>
-
+    <p>新电话号码 <input type="text" name="mobile" /> <button type="button" id="btnUpMobile">修改</button> </p>
 
     <h3>修改头像</h3>
     <form id="formUpPhoto">

@@ -8,13 +8,11 @@
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example.liu.rest_ful</groupId>
-    <artifactId>rest_ful_user</artifactId>
+    <groupId>com.isoft</groupId>
+    <artifactId>news</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>rest_ful_user</name>
+    <name>news</name>
     <description>Demo project for Spring Boot</description>
-
-    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -27,7 +25,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -45,14 +42,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <!-- druid数据源-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

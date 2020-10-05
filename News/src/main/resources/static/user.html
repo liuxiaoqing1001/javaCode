@@ -6,17 +6,9 @@
     <script src="assets/js/jquery-3.1.1.min.js"></script>
     <script>
         $(function(){
-            /*
-           request : Get  http://localhost:8090/user/{name}/{pwd}
-           response :
-            {
-               "errCode" : 0|1
-               "msg"："登录成功|登录失败"
-               "data"：{user的json对象}|null
-            }
-            */
+
             $("#loginBtn").click(function(){
-                console.log('http://localhost:8090/user/' + $('#formLogin input[name="loginname"]').val() + '/' +  $('#formLogin input[name="loginpass"]').val() );
+                //console.log('http://localhost:8090/user/' + $('#formLogin input[name="loginname"]').val() + '/' +  $('#formLogin input[name="loginpass"]').val() );
                 $.get(
                     'http://localhost:8090/user/' + $('#formLogin input[name="loginname"]').val() + '/' +  $('#formLogin input[name="loginpass"]').val() ,
                     function(reqData) {
@@ -24,7 +16,7 @@
                         alert(reqData.msg) ;
                         if(reqData.errCode == 0) {
                             sessionStorage.setItem("loginuser" , JSON.stringify(reqData.data)) ;
-                            location.href = "index.html" ;
+                            location.href = "userCenter.html" ;
                         } else {
                             $('#formLogin input[name="loginname"]').focus();
                         }
@@ -42,7 +34,7 @@
                     password : $('#formRegister input[name="regpass"]').val()
                 } ;
                 var upData = JSON.stringify(userObj) ;
-                console.log(upData) ;   //测试
+                //console.log(upData) ;
                 $.ajax({
                     url : 'http://localhost:8090/user' ,
                     type : 'POST',
@@ -50,7 +42,7 @@
                     contentType : 'application/json;charset=UTF-8',
                     dataType : 'json' ,
                     success : function(reqData){
-                       console.log(reqData); //测试
+                       console.log(reqData)
                         alert(reqData.msg) ;
                     }
                 })
@@ -72,8 +64,6 @@
         <p><input type="text" name="regpass" placeholder="注册密码" /> </p>
         <p><button type="button" id="regBtn">登录</button> </p>
     </form>
-
-<!--    <h3>修改电话</h3>   index.html-->
 
 </body>
 </html>
