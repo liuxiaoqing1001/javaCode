@@ -15,6 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+
+//        万一报错result.NewsTypeDetailMap,注释：125行   NewsTypeDao的getDetailById()
+//        报错result.UserMap,注释：User2Dao的getAll2()和getById(Integer id)
+
 @SpringBootTest
 class SpringbootMybatis2ApplicationTests {
 
@@ -115,8 +119,10 @@ class SpringbootMybatis2ApplicationTests {
 
         System.out.println(newsTypeDao.getAll());
 
-//        //连接 需要指明结果的映射方式
-//        System.out.println(newsTypeDao.getDetailById(2));
+        //连接 需要指明结果的映射方式
+//        万一报错result.NewsTypeDetailMap,注释：下一行   NewsTypeDao的getDetailById()
+//        报错result.UserMap,注释：User2Dao的getAll2()和getById(Integer id)
+        System.out.println(newsTypeDao.getDetailById(2));
 
         System.out.println(newsTypeDao.getDetailById2(2));
 
@@ -336,6 +342,34 @@ class SpringbootMybatis2ApplicationTests {
     void testMyBatis(){
         System.out.println(newsDao1.getById(10));
         System.out.println(newsDao1.getById(10));
+    }
+
+
+
+    @Autowired
+    NewsDao newsDao2;
+    @Test
+    void testNewsDao(){
+//        News news=new News();
+//        news.setTitle("test");
+//        news.setContent("content");
+//        news.setComefrom("QQ");
+//        news.setTypeid(2);
+//        System.out.println(newsDao2.addNews(news));
+
+//        News n = new News() ;
+//        n.setContent("content....t");
+//        n.setComefrom("QQQ");
+//        n.setId(17);
+//        System.out.println(newsDao2.updateNews(n));
+//        System.out.println(newsDao.delByNewsId(18));
+
+        News n2 = new News();
+        n2.setTypeid(2);
+        n2.setTitle("妹");
+        System.out.println(newsDao2.getMoreBy(n2.getTypeid(),n2.getTitle(),n2.getPubdatetime(),2,2));
+        System.out.println(newsDao2.getMoreCount(n2.getTypeid(),n2.getTitle(),n2.getPubdatetime()));
+
     }
 
 

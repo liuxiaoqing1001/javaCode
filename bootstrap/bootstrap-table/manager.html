@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="bootstrap/css/bootstrap-table.css" />
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="bootstrap/js/bootstrap-table.js"></script>
+<script src="bootstrap/js/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="js/bootstrapValidator.js"></script>
+<link rel="stylesheet" href="css/bootstrapValidator.css" />
+<script type="text/javascript" src="js/register.js"></script>
+<title>Insert title here</title>
+<script type="text/javascript">
+	$(function() {		
+		
+		$("#userTable").bootstrapTable(
+				{
+					url : 'userServlet.do',
+					toolbar : '#toolbar',
+					striped : true, // 显示为斑马线格式，奇偶行不同背景色
+
+					showRefresh : "true", // 显示刷新按钮
+					showToggle : "true", // 显示格式切换按钮
+					showColumns : "true", // 显示列过滤按钮
+
+					// 排序有关					
+					sortName : 'id',
+					sortOrder : 'desc',
+
+					// 分页相关
+					pagination : true, // 显示分页
+					pageNumber : 1, // 初始化加载第一页
+					pageSize : 2, // 每页5条数据
+					pageList : [ 2, 5, 10 ], // 可以选择的每页数量
+					sidePagination : "server", //表示服务端请求分页数据 
+
+					// 提交到Server的参数列表
+					// 分页相关
+					queryParamsType : "undefined", // undefined：分页相关提交到服务器端的参数自定义
+					queryParams : function(params) {
+						console.dir(params);
+						/*
+						return {
+							pageSize: params.pageSize, // 每页数量提交到服务器的参数名是pageSize
+							pageNumber: params.pageNumber, // 页码
+							nameKey: $.trim($("#search_uname").val()),
+							emailKey : $.trim($("#search_email").val()),
+							status: $('#formSearch input[name="status"]:checked').val(),
+						}
+						 */
+						params.nameKey = $.trim($("#search_uname").val());
+						params.emailKey = $.trim($("#search_email").val());
+						params.status = $(
+								'#formSearch input[name="status"]:checked')
+								.val();
+						return params;
+					},
+
+					columns : [ {
+						field : '',
+						title : '序号',
+						checkbox : true
+					}, {
+						field : 'id',
+						title : '标识',
+					//checkbox: true
+					}, {
+						field : 'username',
+						title : '姓名',
+						sortable : true,
+					}, {
+						field : 'email',
+						title : '电子邮件'
+					},
+					//{field : 'active' , title : '是否激活'} ,
+					{
+						field : 'active',
+						title : '是否激活',
+						formatter : function(value, row, index) {
+							return value == 1 ? '是' : '否'
+						}
+					}, {
+						title : '操作',
+						formatter : operateFormatter, // 使用叫做operateFormatter函数来设置该列所显示的内容
+						events : operateEvents, // 设置该列按照class名称加载相应的用户动作，动作描述在window.perateEvents函数中
+					} ],
+				});
+		// 新增用户模态框关闭时，清理处理
+		$("#addWindow").on('hide.bs.modal' , function(){
+			$("#registForm").data("bootstrapValidator").resetForm();
+			$("#registForm")[0].reset();
+		}) ;
+		// 查询按钮动作
+		$("#btn_query").click(function() {
+			$("#userTable").bootstrapTable('refresh');
+		});
+		// 查询条件中 重置  按钮动作
+		$("#btn_reset").click(function() {
+			$("#formSearch")[0].reset();
+			$("#userTable").bootstrapTable('refresh');
+		});
+		/*
+		// 工具栏 添加 按钮动作 , 已在html中绑定
+		$("#btn_add").click(function(){
+			$("#editWindow").modal("show") ;
+		}) ;
+		*/
+		// 工具栏 删除 按钮动作
+		$("#btn_delete").click(function() {
+			var rows = $("#userTable").bootstrapTable('getSelections');
+			//console.dir(rows) ;
+			if (rows.length > 0) {
+				var delids = new Array();
+				for ( var index in rows) {
+					delids[index] = rows[index].id;
+				}
+
+				$("#confirmDialog_delmore").modal("show");
+				$("#delMoreBtn").click(function() {
+					$.post('userServlet.do?from=delmore', {
+						ids : delids.join(",")
+					}, function(data) {
+						data = JSON.parse(data);
+						$("#confirmDialog_delmore").modal("hide");
+						if (data.delResult) {
+							$("#alertDialog_ok").modal("show");
+							$("#userTable").bootstrapTable('refresh');
+						} else {
+							$("#alertDialog_fail").modal("show");
+						}
+
+					});
+				});
+			}
+		});
+		
+		// 编辑用户信息的确认按钮
+		$("#editSubmitBtn").click(function(){
+			console.dir($("#editWindow").serialize());
+			$.get(
+				'userServlet.do?from=edit' ,
+				$("#editForm").serialize() ,
+				function(data) {
+					data = JSON.parse(data);
+					$("#editWindow").modal("hide");
+					if (data.updateResult) {
+						$("#alertDialog_ok").modal("show");
+						$("#userTable").bootstrapTable('refresh');
+					} else {
+						$("#alertDialog_fail").modal("show");
+					}
+				}
+			);
+		}) ;
+
+		
+	});
+	
+	function operateFormatter(value, row, index) {
+		var update = '<button type="button" class="edit btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改</button>&nbsp;&nbsp;';
+		var del = '<button type="button" class="remove btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除</button>';
+		return update + del;
+	}
+	window.operateEvents = {
+		'click .edit' : function(e, value, row, index) {
+			$("#editWindow #edit_name").val(row.username);
+			$("#editWindow #edit_email").val(row.email);
+			$('#editWindow #editForm input:radio:first').removeAttr('checked');
+			$('#editWindow #editForm input:radio:last').removeAttr('checked');
+			if(row.active == 1) {
+				$('#editWindow #editForm input:radio:first').attr('checked', 'checked');
+			} else {				
+				$('#editWindow #editForm input:radio:last').attr('checked', 'checked');
+			}
+			$("#editWindow #editId").val(row.id);
+			$("#editWindow").modal("show");
+		},
+		'click .remove' : function(e, value, row, index) {
+			$("#confirmDialog_delone").modal("show");
+			// 删除一个用户模态框中的 删除 按钮动作
+			$("#delOneBtn").click(function() {
+				$.post('userServlet.do?from=delone', {
+					id : row.id
+				}, function(data) {
+					//console.dir(data) ;
+					data = JSON.parse(data);
+					$("#confirmDialog_delone").modal("hide");
+					if (data.delResult) {
+						$("#alertDialog_ok").modal("show");
+						$("#userTable").bootstrapTable('refresh');
+					} else {
+						$("#alertDialog_fail").modal("show");
+					}
+				});
+			});
+		}
+	};
+</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>查询条件</h3>
+				<form id="formSearch" class="form-horizontal">
+					<div class="form-group" style="margin-top: 15px">
+						<label class="control-label col-md-1" for="search_uname">用户名</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" id="search_uname">
+						</div>
+						<label class="control-label col-md-1" for="search_email">电子邮件</label>
+						<div class="col-md-2">
+							<input type="text" class="form-control" id="search_email">
+						</div>
+						<label class="control-label col-md-1" for="status">是否激活</label>
+						<div class="radio  col-md-2">
+							<label><input type="radio" name="status" id="status"
+								value="-1" checked>忽略 </label> <label><input
+								type="radio" name="status" value="1">是</label> <label><input
+								type="radio" name="status" value="0">否 </label>
+						</div>
+						<div class="col-md-3" style="text-align: left;">
+							<button type="button" style="margin-left: 50px" id="btn_query"
+								class="btn btn-primary">查询</button>
+							<button type="button" style="margin-left: 10px" id="btn_reset"
+								class="btn btn-info">清除</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="panel-body">
+				<div id="toolbar" class="btn-group">
+					<button id="btn_add" type="button" class="btn btn-default"
+						data-toggle="modal" data-target="#addWindow">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+					</button>
+					<button id="btn_delete" type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+					</button>
+				</div>
+				<table id="userTable"></table>
+			</div>
+		</div>
+
+		<!-- 添加-模态框 -->
+		<div class="modal fade" id="addWindow" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">添加新用户</h4>
+					</div>
+					<form class="form-horizontal" id="registForm" style="margin: 30px;">
+						<div class="form-group">
+							<label for="name" class="col-md-offset-2 col-md-2 control-label">Username</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name" id="name"
+									placeholder="Username">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass" class="col-md-offset-2 col-md-2 control-label">Password</label>
+							<div class="col-md-6">
+								<input type="password" class="form-control" name="pass"
+									id="pass" placeholder="Password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass2" class="col-md-offset-2 col-md-2 control-label">Password2</label>
+							<div class="col-md-6">
+								<input type="password" class="form-control" name="pass2"
+									id="pass2" placeholder="ConfirmPassword">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-md-offset-2 col-md-2 control-label">Email</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="email" id="email"
+									placeholder="Email">
+							</div>
+						</div>
+
+						<div class="form-group modal-footer">
+							<div class="col-md-offset-4 col-md-6">
+								<span id="returnMessage" class="glyphicon"></span>
+								<button type="submit" id="regSubmitBtn" class="btn btn-info">Register</button>
+								<button type="reset" id="resetBtn" class="btn btn-default">Reset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- 编辑-模态框 -->
+		<div class="modal fade" id="editWindow" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">编辑用户</h4>
+					</div>
+					<form class="form-horizontal" id="editForm" style="margin: 30px;">
+						<div class="form-group">
+							<input type="hidden" id="editId" name="editId" /> <label
+								for="edit_name" class="col-md-offset-2 col-md-2 control-label">Username</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name"
+									id="edit_name" placeholder="Username" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit_email"
+								class="col-md-offset-2 col-md-2 control-label">Email</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="email"
+									id="edit_email" placeholder="Email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit_status"
+								class="col-md-offset-2 col-md-2 control-label">Status</label>
+							<div class="radio col-md-6">
+								<label><input type="radio" id="activeOn" name="status"
+									value="1">激活</label> <label><input type="radio"
+									id="activeOff" name="status" value="0" checked>未激活 </label>
+							</div>
+						</div>
+						<div class="form-group modal-footer">
+							<div class="col-md-offset-4 col-md-6">
+								<span id="returnMessage" class="glyphicon"></span>
+								<button type="button" id="editSubmitBtn" class="btn btn-info">Update</button>
+								<button type="reset" id="editResetBtn" class="btn btn-default">Reset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- alert-ok -->
+		<div class="modal fade" id="alertDialog_ok" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="alert alert-success">
+							操作成功
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- alert-fail -->
+		<div class="modal fade" id="alertDialog_fail" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="alert alert-danger">操作失败</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- alert-warning -->
+		<div class="modal fade" id="alertDialog_warning" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="alert alert-warning">
+							请选中要操作的行
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- confirm --一个用户的确认删除框 -->
+		<div class="modal fade" id="confirmDialog_delone" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<div>操作提示</div>
+					</div>
+					<h3 class="modal-body">确认删除？</h3>
+					<div class="modal-footer">
+						<button type="button" id="delOneBtn" class="btn btn-danger">删除</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- confirm --多个用户的确认删除框 -->
+		<div class="modal fade" id="confirmDialog_delmore" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<div>操作提示</div>
+					</div>
+					<h3 class="modal-body">确认删除选中用户？</h3>
+					<div class="modal-footer">
+						<button type="button" id="delMoreBtn" class="btn btn-danger">删除</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+
+</html>

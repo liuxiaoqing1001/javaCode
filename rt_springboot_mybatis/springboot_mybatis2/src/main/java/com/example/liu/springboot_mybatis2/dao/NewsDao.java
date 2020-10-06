@@ -5,6 +5,7 @@ import com.example.liu.springboot_mybatis2.entity.NewsType;
 import com.example.liu.springboot_mybatis2.entity.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -110,6 +111,64 @@ public interface NewsDao {
             "</script>")
     int deleteMore(List<Integer> idList);
 
+    @Delete("delete from tb_news where id=#{id}")
+    int delByNewsId(Integer id) ;
 
+//    测试前端WebStorm页面访问后端
+
+    @Select("<script>" +
+            "select * from tb_news" +
+            "        <where>" +
+            "            <if test=\"null != typeid\">" +
+            "                and typeid=#{typeid}" +
+            "            </if>" +
+            "            <if test=\"null != title\">" +
+            "                <bind name=\"titleKey\" value=\"'%'+title+'%'\" />" +
+            "                    and title like #{titleKey}" +
+            "            </if>" +
+            "            <if test=\"null != pubdatetime\">" +
+            "                and DATE_FORMAT(pubdatetime,'%Y%m%d')=#{pubdatetime}" +
+            "            </if>" +
+            "        </where>"+
+            " order by pubdatetime desc limit #{offset},#{rows}" +
+            "</script>")
+    //参数多个的时候使用@Param("")注解
+    public List<News> getMoreBy(@Param("typeid") Integer typeid , @Param("title") String title , @Param("pubdatetime") Date pubdate, @Param("offset") Integer offset , @Param("rows") Integer rows) ;
+
+    @Select("<script>" +
+            "select count(*) from tb_news" +
+            "        <where>" +
+            "            <if test=\"null != typeid\">" +
+            "                and typeid=#{typeid}" +
+            "            </if>" +
+            "            <if test=\"null != title\">" +
+            "                <bind name=\"titleKey\" value=\"'%'+title+'%'\" />" +
+            "                    and title like #{titleKey}" +
+            "            </if>" +
+            "            <if test=\"null != pubdatetime\">" +
+            "                and DATE_FORMAT(pubdatetime,'%Y%m%d')=#{pubdatetime}" +
+            "            </if>" +
+            "        </where>"+
+            "</script>")
+    public int getMoreCount(@Param("typeid") Integer typeid , @Param("title") String title , @Param("pubdatetime") Date pubdate) ;
+
+
+    @Insert("insert into tb_news values(null , #{typeid} , #{title} , #{content} ,now(),#{comefrom})")
+    int addNews(News news) ;
+
+//    动态sql新闻    测试前端WebStorm页面访问后端
+    @Update("<script>" +
+            "update tb_news" +
+            "        <set>" +
+            "            <if test=\"null!=content\">" +
+            "                content=#{content}," +
+            "            </if>" +
+            "            <if test=\"null!=comefrom\">" +
+            "                comefrom=#{comefrom}" +
+            "            </if>" +
+            "        </set>" +
+            "        where id=#{id}" +
+            "</script>")
+    int updateNews(News news);
 
 }

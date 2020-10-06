@@ -19,24 +19,24 @@ public interface User2Dao {
             "from tb_user")
     List<User2> getAll();
 
-////    解决方法2
-////        使用@Results注解或者\<resultMap>来说明查询结果和成员的对应关系
-//    @Select("select * from tb_user")
-//////    1
-////    @Results({
-////            @Result(id=true,column = "id" , property = "id") ,
-////            @Result(column = "name" , property = "uname") ,
-////            @Result(column = "password" , property = "upass") ,
-////            @Result(column = "regdatetime" , property = "regdatetime") ,
-////            @Result(column = "status" , property = "status") ,
-////            @Result(column = "photourl" , property = "photourl") ,
-////            @Result(column = "email" , property = "email") ,
-////            @Result(column = "mobile" , property = "mobile") ,
-////            @Result(column = "activecode" , property = "activecode")
-////    })
-////    2
-//    @ResultMap("com.example.liu.springboot_mybatis2.result.UserMap")
-//    List<User2> getAll2();
+//    解决方法2
+//        使用@Results注解或者\<resultMap>来说明查询结果和成员的对应关系
+    @Select("select * from tb_user")
+////    1
+//    @Results({
+//            @Result(id=true,column = "id" , property = "id") ,
+//            @Result(column = "name" , property = "uname") ,
+//            @Result(column = "password" , property = "upass") ,
+//            @Result(column = "regdatetime" , property = "regdatetime") ,
+//            @Result(column = "status" , property = "status") ,
+//            @Result(column = "photourl" , property = "photourl") ,
+//            @Result(column = "email" , property = "email") ,
+//            @Result(column = "mobile" , property = "mobile") ,
+//            @Result(column = "activecode" , property = "activecode")
+//    })
+//    2
+    @ResultMap("com.example.liu.springboot_mybatis2.result.UserMap")
+    List<User2> getAll2();
 
 //    @Results不能重复使用，只能再重述一遍
 //    要想重复用，使用 <resultMap>
@@ -48,20 +48,20 @@ public interface User2Dao {
    @ResultMap("com.example.liu.springboot_mybatis.result.UserMap")
 */
 
-////    1
-//    @Select("select * from tb_user where id=#{id}")
-////    @Results({
-////            @Result(id=true,column = "id" , property = "id") ,
-////            @Result(column = "name" , property = "uname") ,
-////            @Result(column = "password" , property = "upass") ,
-////            @Result(column = "regdatetime" , property = "regdatetime") ,
-////            @Result(column = "status" , property = "status") ,
-////            @Result(column = "photourl" , property = "photourl") ,
-////            @Result(column = "email" , property = "email") ,
-////            @Result(column = "mobile" , property = "mobile") ,
-////            @Result(column = "activecode" , property = "activecode")
-////    })
-////    2
-//    @ResultMap("com.example.liu.springboot_mybatis2.result.UserMap")
-//    User2 getById(Integer id) ;
+//    1
+    @Select("select * from tb_user where id=#{id}")
+//    @Results({
+//            @Result(id=true,column = "id" , property = "id") ,
+//            @Result(column = "name" , property = "uname") ,
+//            @Result(column = "password" , property = "upass") ,
+//            @Result(column = "regdatetime" , property = "regdatetime") ,
+//            @Result(column = "status" , property = "status") ,
+//            @Result(column = "photourl" , property = "photourl") ,
+//            @Result(column = "email" , property = "email") ,
+//            @Result(column = "mobile" , property = "mobile") ,
+//            @Result(column = "activecode" , property = "activecode")
+//    })
+//    2
+    @ResultMap("com.example.liu.springboot_mybatis2.result.UserMap")
+    User2 getById(Integer id) ;
 }

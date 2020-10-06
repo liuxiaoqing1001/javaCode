@@ -1,0 +1,174 @@
+<!-- 添加-模态框 -->
+		<div class="modal fade" id="addWindow" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">添加新用户</h4>
+					</div>
+					<form class="form-horizontal" id="registForm" style="margin: 30px;">
+						<div class="form-group">
+							<label for="name" class="col-md-offset-2 col-md-2 control-label">Username</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name" id="name"
+									placeholder="Username">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass" class="col-md-offset-2 col-md-2 control-label">Password</label>
+							<div class="col-md-6">
+								<input type="password" class="form-control" name="pass"
+									id="pass" placeholder="Password">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="pass2" class="col-md-offset-2 col-md-2 control-label">Password2</label>
+							<div class="col-md-6">
+								<input type="password" class="form-control" name="pass2"
+									id="pass2" placeholder="ConfirmPassword">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-md-offset-2 col-md-2 control-label">Email</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="email" id="email"
+									placeholder="Email">
+							</div>
+						</div>
+
+						<div class="form-group modal-footer">
+							<div class="col-md-offset-4 col-md-6">
+								<span id="returnMessage" class="glyphicon"></span>
+								<button type="submit" id="regSubmitBtn" class="btn btn-info">Register</button>
+								<button type="reset" id="resetBtn" class="btn btn-default">Reset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- 编辑-模态框 -->
+		<div class="modal fade" id="editWindow" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">编辑用户</h4>
+					</div>
+					<form class="form-horizontal" id="editForm" style="margin: 30px;">
+						<div class="form-group">
+							<input type="hidden" id="editId" name="editId" /> <label
+								for="edit_name" class="col-md-offset-2 col-md-2 control-label">Username</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name"
+									id="edit_name" placeholder="Username" readonly="readonly">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit_email"
+								class="col-md-offset-2 col-md-2 control-label">Email</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="email"
+									id="edit_email" placeholder="Email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit_status"
+								class="col-md-offset-2 col-md-2 control-label">Status</label>
+							<div class="radio col-md-6">
+								<label><input type="radio" id="activeOn" name="status"
+									value="1">激活</label> <label><input type="radio"
+									id="activeOff" name="status" value="0" checked>未激活 </label>
+							</div>
+						</div>
+						<div class="form-group modal-footer">
+							<div class="col-md-offset-4 col-md-6">
+								<span id="returnMessage" class="glyphicon"></span>
+								<button type="button" id="editSubmitBtn" class="btn btn-info">Update</button>
+								<button type="reset" id="editResetBtn" class="btn btn-default">Reset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- alert-ok -->
+		<div class="modal fade" id="alertDialog_ok" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="alert alert-success">
+							操作成功
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- alert-fail -->
+		<div class="modal fade" id="alertDialog_fail" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="alert alert-danger">操作失败</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- alert-warning -->
+		<div class="modal fade" id="alertDialog_warning" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="alert alert-warning">
+							请选中要操作的行
+							<button type="button" class="close" data-dismiss="modal"
+								aria-hidden="true">&times;</button>
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- confirm --一个用户的确认删除框 -->
+		<div class="modal fade" id="confirmDialog_delone" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<div>操作提示</div>
+					</div>
+					<h3 class="modal-body">确认删除？</h3>
+					<div class="modal-footer">
+						<button type="button" id="delOneBtn" class="btn btn-danger">删除</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- confirm --多个用户的确认删除框 -->
+		<div class="modal fade" id="confirmDialog_delmore" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<div>操作提示</div>
+					</div>
+					<h3 class="modal-body">确认删除选中用户？</h3>
+					<div class="modal-footer">
+						<button type="button" id="delMoreBtn" class="btn btn-danger">删除</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>

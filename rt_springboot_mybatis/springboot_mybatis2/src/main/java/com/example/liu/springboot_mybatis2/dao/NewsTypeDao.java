@@ -18,12 +18,12 @@ public interface NewsTypeDao {
     @Select("select * from tb_type")
     List<NewsType> getAll();
 
-////    连接，实现多表信息查询
-//    @Select("select t.id as tid,t.typename,n.* " +
-//            "from tb_news n inner join tb_type t on n.typeid=t.id " +
-//            "where n.typeid=#{typeid} order by n.pubdatetime desc limit 0,10")
-//    @ResultMap("com.example.liu.springboot_mybatis2.result.NewsTypeDetailMap")
-//    NewsType getDetailById(Integer typeid);
+//    连接，实现多表信息查询
+    @Select("select t.id as tid,t.typename,n.* " +
+            "from tb_news n inner join tb_type t on n.typeid=t.id " +
+            "where n.typeid=#{typeid} order by n.pubdatetime desc limit 0,10")
+    @ResultMap("com.example.liu.springboot_mybatis2.result.NewsTypeDetailMap")
+    NewsType getDetailById(Integer typeid);
 
 
 //    多条select实现多表信息查询

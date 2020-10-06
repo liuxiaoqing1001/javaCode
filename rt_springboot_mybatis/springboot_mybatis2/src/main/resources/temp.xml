@@ -109,5 +109,18 @@
     </update>
 
 
+<!--    动态sql新闻    测试前端WebStorm页面访问后端 -->
+    <update id="">
+        update tb_news
+        <set>
+            <if test="null!=content">
+                content=#{content}
+            </if>
+            <if test="null!=comefrom">
+                comefrom=#{comefrom}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 
 </mapper>

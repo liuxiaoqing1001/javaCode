@@ -1,0 +1,132 @@
+https://www.cnblogs.com/tangzeqi/p/8021637.html
+<div class="row">
+        <!-- 左 -->
+        <div class="col-md-3">
+            <div id="tree"></div>
+        </div>
+        <!-- 右 -->
+        <div class="col-md-9">
+            <!-- 第一行 路径导航 -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb" id="breadcrumb">
+                        <li><a href="welcome.html" target="contentFrame">首页</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- 第二行 iframe -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe id="contentFrame" name="contentFrame"
+                                class="embed-responsive-item" src="welcome.html"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+$.getJSON('json/menu.json', function (data) {
+                $("#tree").treeview({
+                    data: data,
+                    selectedIcon: "glyphicon glyphicon-menu-right",
+                    selectedBackColor: '#FF7F24',
+                    collapseIcon : '' ,  // 子项展开时去掉前面默认的 + 图标
+                    expandIcon : '' ,    // 子项未展开时去掉前面默认 + 图标
+                    onNodeSelected: function (event, data) {
+						// 根据当前选中节点的父节点
+                        var parent = $("#tree").treeview("getNode", data.parentId);
+                        $("#breadcrumb").html(
+                            "<li>" + parent.text + "</li>" +
+                            "<li>" + data.text + "</li>");
+                        $("#contentFrame").attr("src", data.href);
+                    }
+                })
+            })
+menu.json  ：
+[
+  {
+    "text": "<span class='glyphicon glyphicon-th-list' /> 系统管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":true
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-book' /> 角色管理",
+        "href":"/baseInfo/sysDict"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-list-alt' /> 权限管理",
+        "href":"/baseInfo/category"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-user' /> 系统用户管理",
+        "href":"/baseInfo/sysUser"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-inbox' />  职工管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-paperclip' /> 教工管理",
+        "href":"/assets/normal"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-align-justify' /> 职工管理",
+        "href":"/baseInfo/category"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-indent-left' />  班级及幼儿信息管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-align-center' /> 班级管理",
+        "href":"/baseInfo/category"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-user' /> 幼儿及家长管理",
+        "href":"/assets/finance"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-transfer' />  资讯管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-flag' /> 校园活动资讯管理",
+        "href":"/trans/normal"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-picture' /> 学生风采资讯管理",
+        "href":"/trans/finance"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-th' /> 食谱管理",
+        "href":"/trans/car"
+      }
+    ]
+  }
+]
+

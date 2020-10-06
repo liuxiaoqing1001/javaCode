@@ -1,0 +1,86 @@
+[
+  {
+    "text": "<span class='glyphicon glyphicon-th-list' /> 系统管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":true
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-book' /> 角色管理",
+        "href":"/baseInfo/sysDict"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-list-alt' /> 权限管理",
+        "href":"/baseInfo/category"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-user' /> 系统用户管理",
+        "href":"/baseInfo/sysUser"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-inbox' />  职工管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-paperclip' /> 教工管理",
+        "href":"/assets/normal"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-align-justify' /> 职工管理",
+        "href":"/baseInfo/category"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-indent-left' />  班级及幼儿信息管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-align-center' /> 班级管理",
+        "href":"/baseInfo/category"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-user' /> 幼儿及家长管理",
+        "href":"/assets/finance"
+      }
+    ]
+  },
+  {
+    "text": "<span class='glyphicon glyphicon-transfer' />  资讯管理",
+    "backColor": "#428bca",
+    "color": "#ffffff",
+    "selectable": false,
+    "state": {
+      "expanded":false
+    },
+    "nodes": [
+      {
+        "text": "<span class='glyphicon glyphicon-flag' /> 校园活动资讯管理",
+        "href":"/trans/normal"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-picture' /> 学生风采资讯管理",
+        "href":"/trans/finance"
+      },
+      {
+        "text": "<span class='glyphicon glyphicon-th' /> 食谱管理",
+        "href":"/trans/car"
+      }
+    ]
+  }
+]
