@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-//@SpringBootTest
+@SpringBootTest
 class NewsApplicationTests {
     @Autowired
     NewsDao newsDao ;
