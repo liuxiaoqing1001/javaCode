@@ -9,12 +9,14 @@
         <module name="eureka-server" />
         <module name="ereka-consumer" />
         <module name="eureka-server2" />
+        <module name="eureka-consumer-feign" />
         <module name="eureka-provider" />
         <module name="demo-cloud" />
         <module name="ereka-provider2" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="eureka-comsumer-feign" target="1.8" />
       <module name="eureka-consumer" target="1.8" />
       <module name="eureka-provider2" target="1.8" />
     </bytecodeTargetLevel>
@@ -23,7 +25,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ereka-consumer" options="-parameters" />
       <module name="ereka-provider2" options="-parameters" />
+      <module name="eureka-comsumer-feign" options="-parameters" />
       <module name="eureka-consumer" options="-parameters" />
+      <module name="eureka-consumer-feign" options="-parameters" />
       <module name="eureka-provider" options="-parameters" />
       <module name="eureka-provider2" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
