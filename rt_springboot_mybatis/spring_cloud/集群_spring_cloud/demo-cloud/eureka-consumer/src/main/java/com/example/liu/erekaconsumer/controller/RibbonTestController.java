@@ -1,6 +1,7 @@
 package com.example.liu.erekaconsumer.controller;
 
 import com.example.liu.erekaconsumer.bean.User;
+import com.example.liu.erekaconsumer.service.HystrixService;
 import com.example.liu.erekaconsumer.service.RibbonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RibbonTestController {
     @Autowired
-    RibbonService ribbonService;
+//    RibbonService ribbonService;
+    HystrixService ribbonService;
     @GetMapping("/port")
     public String port(){
         return ribbonService.getPort();
