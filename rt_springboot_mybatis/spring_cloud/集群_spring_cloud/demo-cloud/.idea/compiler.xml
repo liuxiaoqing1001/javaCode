@@ -13,6 +13,7 @@
         <module name="eureka-provider" />
         <module name="demo-cloud" />
         <module name="ereka-provider2" />
+        <module name="gateway-zuul" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -32,6 +33,7 @@
       <module name="eureka-provider2" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="eureka-server2" options="-parameters" />
+      <module name="gateway-zuul" options="-parameters" />
     </option>
   </component>
 </project>
