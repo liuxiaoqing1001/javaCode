@@ -16,4 +16,6 @@
     <delete id="delById">
         delete from tb_user where id=#{id}
     </delete>
+
+
 </mapper>

@@ -81,6 +81,15 @@
         </foreach>
     </insert>
 
+
+
+<!--    <insert id="">-->
+<!--        insert into tb_video(typeid , uname , title , description , pubdatetime , status , videopath) values(#{typeid} , #{uname} , #{title} , #{description} , now() , '未审核' , #{videopath}) -->
+<!--        <selectKey keyProperty="id" order="AFTER" resultType="int">-->
+<!--            select LAST_INSERT_ID()-->
+<!--        </selectKey>-->
+<!--    </insert>-->
+
     <delete id="">
         delete from tb_news where id in
         <foreach collection="list" item="delid" separator="," open="("close= ")">
